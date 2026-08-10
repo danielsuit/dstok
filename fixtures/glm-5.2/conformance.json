@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "profile": "glm-5.2",
+  "status": "passing",
+  "artifact": {
+    "sha256": "19e773648cb4e65de8660ea6365e10acca112d42a854923df93db4a6f333a82d",
+    "blake3": "95875d64ad7f0287b7c4c3ac262475aff876301b4d71c31a939496f92d0a4836",
+    "bytes": 20217442,
+    "vocab_size": 154856,
+    "merge_rules": 321649,
+    "added_tokens": 36
+  },
+  "oracle": {
+    "implementation": "huggingface/tokenizers",
+    "version": "0.22.2",
+    "regex_backend": "onig",
+    "interface": "encode_fast(add_special_tokens=false)"
+  },
+  "assertions": [
+    "dstok-core token IDs equal HF",
+    "dstok-fast token IDs equal HF",
+    "count-only equals HF ID length",
+    "serial and 2/4/8-worker paths agree",
+    "frozen gateway-rendered prompts pass",
+    "adversarial Unicode and added-token cases pass",
+    "exact segment-cache append and boundary cases equal full HF recounts",
+    "property-generated Unicode cases pass"
+  ]
+}

@@ -1,0 +1,2 @@
+fixtures/glm-5.2/tokenizer.json -diff linguist-generated=true
+benchmarks/*.json -diff linguist-generated=true

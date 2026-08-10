@@ -1,0 +1,17 @@
+[
+  "",
+  "hello world",
+  "<|system|>\nYou are a coding agent.\n<|user|>\nFix src/main.rs without changing behavior.\n<|assistant|>\n",
+  "<|system|>\nUse tools when needed.\n<|user|>\nInspect the repository.\n<|assistant|>\n<think>Need to search.</think>\n<tool_call>{\"name\":\"rg\",\"arguments\":{\"pattern\":\"Tokenizer\"}}</tool_call>\n<|observation|>\nsrc/tokenizer.rs:42\n<|assistant|>\n",
+  "Unicode: café café Ελληνικά Русский العربية हिन्दी 中文 日本語 한국어",
+  "Emoji: 👩🏽‍💻 🧑‍🚀 🏳️‍🌈 ❤️‍🔥 🙂🙃",
+  "newlines:\r\n\r\none\n  two\r\n\tthree\n",
+  " \t  \n\n    trailing whitespace     ",
+  "0 1 12 123 1234 12345678901234567890 １２３４५६७",
+  "<|endoftext|>[MASK][gMASK][sMASK]<sop><eop><|user|><|assistant|>",
+  "<|code_prefix|>fn main() { println!(\"hi\"); }<|code_middle|>// patch<|code_suffix|>",
+  "<think>x</think><tool_call>{}</tool_call><tool_response>ok</tool_response>",
+  " имущества",
+  "const parse = (value: string): Result<number, Error> => {\n  if (!/^\\d+$/.test(value)) throw new Error(`bad: ${value}`);\n  return Number(value);\n};",
+  "combining: a̐éö̲ Z͑ͫ̓ͪͯͯ̚͏"
+]

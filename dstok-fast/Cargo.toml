@@ -1,0 +1,21 @@
+[package]
+name = "dstok-fast"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Bounded-cache, count-only GLM-5.2 tokenizer for dstok"
+documentation = "https://docs.rs/dstok-fast"
+
+[dependencies]
+smallvec.workspace = true
+rayon.workspace = true
+dstok-core = { version = "0.1.0", path = "../dstok-core" }
+dstok-model = { version = "0.1.0", path = "../dstok-model" }
+moka = { version = "0.12.15", features = ["sync"] }
+
+[dev-dependencies]
+proptest.workspace = true

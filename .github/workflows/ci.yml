@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_PROFILE_DEV_DEBUG: "0"
+
+jobs:
+  quality:
+    name: Quality and x86 tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+        with:
+          toolchain: 1.85.0
+          components: clippy,rustfmt
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - run: cargo test --workspace --all-targets --locked
+      - run: cargo run -p xtask --locked -- parity-glm52
+      - run: git diff --exit-code -- fixtures/glm-5.2/conformance.json
+      - run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
+
+  arm:
+    name: Linux AArch64 tests
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+        with:
+          toolchain: 1.85.0
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - run: cargo test --workspace --all-targets --locked
+
+  package:
+    name: Package archives
+    needs: quality
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+        with:
+          toolchain: 1.85.0
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - run: cargo package -p dstok-model --locked
+      - name: Package dstok-core before registry publication
+        run: >-
+          cargo package -p dstok-core --locked --no-verify
+          --config "patch.crates-io.dstok-model.path=\"$PWD/dstok-model\""
+      - name: Package dstok-fast before registry publication
+        run: >-
+          cargo package -p dstok-fast --locked --no-verify
+          --config "patch.crates-io.dstok-model.path=\"$PWD/dstok-model\""
+          --config "patch.crates-io.dstok-core.path=\"$PWD/dstok-core\""
+      - name: Package dstok facade before registry publication
+        run: >-
+          cargo package -p dstok --locked --no-verify
+          --config "patch.crates-io.dstok-model.path=\"$PWD/dstok-model\""
+          --config "patch.crates-io.dstok-core.path=\"$PWD/dstok-core\""
+          --config "patch.crates-io.dstok-fast.path=\"$PWD/dstok-fast\""

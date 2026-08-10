@@ -1,0 +1,72 @@
+[package]
+name = "dstok"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Correctness-gated, memory-efficient GLM-5.2 token counting"
+documentation = "https://docs.rs/dstok"
+readme = "README.md"
+keywords = ["tokenizer", "bpe", "glm", "llm", "inference"]
+categories = ["text-processing"]
+include = [
+    "src/**",
+    "examples/**",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/**",
+    "LICENSE-*",
+]
+
+[dependencies]
+dstok-fast = { version = "0.1.0", path = "dstok-fast" }
+dstok-model = { version = "0.1.0", path = "dstok-model" }
+
+[workspace]
+resolver = "2"
+members = [
+    "dstok-core",
+    "dstok-model",
+    "dstok-simd",
+    "dstok-fast",
+    "dstok-compat",
+    "dstok-oracle",
+    "dstok-bench",
+    "dstok-fuzz",
+    "dstok-corpus",
+    "dstok-py",
+    "xtask",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.85"
+authors = ["Daniel Suit"]
+repository = "https://github.com/danielsuit/dstok"
+homepage = "https://github.com/danielsuit/dstok"
+
+[workspace.dependencies]
+smallvec = { version = "1.13", features = ["union", "const_generics"] }
+rayon = "1.10"
+blake3 = "1.5"
+proptest = "1.5"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+opt-level = 3
+
+[profile.bench]
+lto = "thin"
+codegen-units = 1

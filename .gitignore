@@ -1,0 +1,25 @@
+/target
+.DS_Store
+.env
+.env.*
+!.env.example
+*.profraw
+*.profdata
+coverage/
+__pycache__/
+*.py[cod]
+**/*.rs.bk
+Cargo.lock.bak
+.idea/
+.vscode/*
+!.vscode/settings.json
+# Per plan §4.5: NO corpus data checked in. Manifests + fetchers only.
+dstok-corpus/data/
+dstok-fuzz/artifacts/
+dstok-fuzz/corpus/
+dstok-fuzz/fuzz-readable/
+*.seed
+
+# Local design history. Public, current documentation lives under docs/.
+plan.md
+OPTIMIZATIONS.md

@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "implementation": "hf",
+  "requested_tokens": 20000000,
+  "actual_tokens": 19891852,
+  "rendered_bytes": 80038245,
+  "elapsed_ms": 16275.541166,
+  "peak_rss_bytes": 8639578112,
+  "cache_max_bytes": 67108864,
+  "segment_cache_max_bytes": 134217728,
+  "parity_manifest": "fixtures/glm-5.2/conformance.json"
+}

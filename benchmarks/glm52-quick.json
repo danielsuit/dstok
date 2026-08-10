@@ -1,0 +1,188 @@
+{
+  "schema_version": 2,
+  "profile": "glm-5.2",
+  "oracle": "huggingface/tokenizers 0.22.2 encode_fast",
+  "hardware": {
+    "architecture": "aarch64",
+    "operating_system": "macos",
+    "logical_cpus": 11
+  },
+  "cache_max_bytes": 67108864,
+  "segment_cache_max_bytes": 134217728,
+  "iterations": 5,
+  "methodology": [
+    "All token IDs are compared with HF before timing.",
+    "Inputs are already-rendered coding-agent histories.",
+    "Cold cache is invalidated before every timed sample.",
+    "Append-only starts cold, then fully recounts 25/50/75/100 percent while reusing exact unchanged text segments.",
+    "Allocation counters are process-global deltas during each row.",
+    "Peak RSS is the process high-water mark at row completion.",
+    "Speedups use the matching HF encode, render, or append scenario."
+  ],
+  "workloads": [
+    {
+      "requested_tokens": 100000,
+      "actual_tokens": 106612,
+      "rendered_bytes": 438245,
+      "ids_verified": true,
+      "measurements": [
+        {
+          "implementation": "hf-0.22.2",
+          "scenario": "encode-fast",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 68.998,
+          "p95_ms": 70.219084,
+          "p99_ms": 70.219084,
+          "allocated_bytes": 1031076660,
+          "allocations": 6605391,
+          "peak_rss_bytes": 330022912,
+          "speedup_vs_hf_p50": 1.0
+        },
+        {
+          "implementation": "hf-0.22.2",
+          "scenario": "render-plus-encode",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 69.487375,
+          "p95_ms": 74.075167,
+          "p99_ms": 74.075167,
+          "allocated_bytes": 1037822900,
+          "allocations": 6606681,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 1.0
+        },
+        {
+          "implementation": "dstok-core",
+          "scenario": "count-only",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 46.600375,
+          "p95_ms": 47.794667,
+          "p99_ms": 47.794667,
+          "allocated_bytes": 1308200,
+          "allocations": 46,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 1.4806318618680645
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "count-cold-cache",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 34.2335,
+          "p95_ms": 36.572667,
+          "p99_ms": 36.572667,
+          "allocated_bytes": 18849573,
+          "allocations": 37265,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 2.0155111221464357
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "count-warm-cache",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 0.552125,
+          "p95_ms": 0.561709,
+          "p99_ms": 0.561709,
+          "allocated_bytes": 1391080,
+          "allocations": 86,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 124.96807788091466
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "ids-only-warm-cache",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 32.950792,
+          "p95_ms": 33.885292,
+          "p99_ms": 33.885292,
+          "allocated_bytes": 12234116,
+          "allocations": 3914,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 2.0939709127477117
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "render-plus-count-warm-cache",
+          "threads": 1,
+          "tokens": 106612,
+          "p50_ms": 0.531625,
+          "p95_ms": 0.606333,
+          "p99_ms": 0.606333,
+          "allocated_bytes": 8139392,
+          "allocations": 1377,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 130.70750058782036
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "count-parallel-warm-cache",
+          "threads": 2,
+          "tokens": 106612,
+          "p50_ms": 33.975042,
+          "p95_ms": 34.66825,
+          "p99_ms": 34.66825,
+          "allocated_bytes": 20064080,
+          "allocations": 2934,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 2.0308436999136013
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "count-parallel-warm-cache",
+          "threads": 4,
+          "tokens": 106612,
+          "p50_ms": 29.262125,
+          "p95_ms": 32.004542,
+          "p99_ms": 32.004542,
+          "allocated_bytes": 17837464,
+          "allocations": 2007,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 2.3579285509852754
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "count-parallel-warm-cache",
+          "threads": 8,
+          "tokens": 106612,
+          "p50_ms": 37.437666,
+          "p95_ms": 38.403291,
+          "p99_ms": 38.403291,
+          "allocated_bytes": 16191984,
+          "allocations": 1478,
+          "peak_rss_bytes": 332611584,
+          "speedup_vs_hf_p50": 1.8430101919280975
+        },
+        {
+          "implementation": "hf-0.22.2",
+          "scenario": "append-only-full-recount",
+          "threads": 1,
+          "tokens": 266801,
+          "p50_ms": 172.970625,
+          "p95_ms": 178.062875,
+          "p99_ms": 178.062875,
+          "allocated_bytes": 2618153587,
+          "allocations": 16530575,
+          "peak_rss_bytes": 340918272,
+          "speedup_vs_hf_p50": 1.0
+        },
+        {
+          "implementation": "dstok-fast",
+          "scenario": "append-only-full-recount",
+          "threads": 1,
+          "tokens": 266801,
+          "p50_ms": 28.429292,
+          "p95_ms": 29.85725,
+          "p99_ms": 29.85725,
+          "allocated_bytes": 20967978,
+          "allocations": 38438,
+          "peak_rss_bytes": 340918272,
+          "speedup_vs_hf_p50": 6.084239628619665
+        }
+      ]
+    }
+  ]
+}
