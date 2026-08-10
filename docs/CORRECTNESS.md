@@ -82,6 +82,27 @@ cargo run -p dstok-fuzz --features libfuzzer \
   --bin glm52-parity-fuzz -- -runs=10000
 ```
 
+## Platform verification
+
+The gates are architecture-sensitive in principle, so they are run on more than
+the development host. No published crate contains architecture-gated code —
+every `target_arch` and `target_feature` in the workspace lives in
+`dstok-simd`, which is `publish = false` and absent from the `dstok` dependency
+graph — but the C dependencies (`onig_sys`, `blake3`) and the parallel paths
+still differ per platform.
+
+| Platform | How | Scope |
+|----------|-----|-------|
+| macOS AArch64 | CI job + development host | full gates |
+| Linux AArch64 | CI job + a 20-core bare-metal host | full gates, plus the 20M benchmark matrix |
+| Linux x86_64 | CI job | full gates |
+
+Cross-compiling from macOS to either Linux target does **not** work without a
+cross C toolchain, because `onig_sys` and `blake3` build C. `cargo check
+--target x86_64-apple-darwin` is a useful stand-in for catching x86-only
+compile errors without leaving an Apple Silicon host, and it exercises
+`dstok-simd`'s SSE4.2 and AVX2 paths.
+
 ## Changing the artifact or algorithm
 
 Do not update an artifact digest merely to make a loader test pass. A tokenizer

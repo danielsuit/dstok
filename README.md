@@ -126,10 +126,13 @@ For the checked-in 19.89M-token Apple Silicon workload, recorded against HF
 - Isolated peak RSS: 8.640 GB for HF and 0.294 GB for dstok with the default
   cache budgets.
 
+The same matrix on a 20-core Linux AArch64 host, recorded against 0.23.1, gives
+16.547 s for HF, 5.748 s cold, and 69.68 ms segment-warm at 19.89M tokens.
+
 These are observations from specific machines, not portable latency promises.
-Linux x86_64 and AArch64 are separate correctness/compile gates. Every
-benchmark verifies token IDs before timing. Reproduce the checked-in matrix
-with:
+Linux AArch64 has both benchmark evidence and correctness gates; Linux x86_64
+is a correctness gate in CI. Every benchmark verifies token IDs before timing.
+Reproduce the checked-in matrix with:
 
 ```sh
 cargo run --release -p dstok-bench -- \

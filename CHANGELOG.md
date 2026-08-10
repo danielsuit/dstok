@@ -13,7 +13,8 @@ All notable changes to dstok are documented here. The project follows
   file or bytes.
 - Exact count-only text-segment cache for append-heavy conversations.
 - Hugging Face 0.23.1 differential, property, append-boundary, and fuzz gates.
-- Linux x86_64 and AArch64 benchmark evidence up to 20 million tokens.
+- Benchmark evidence up to 20 million tokens on macOS AArch64 and Linux
+  AArch64, plus correctness gates on Linux x86_64.
 
 ### Changed
 
