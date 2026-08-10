@@ -17,5 +17,7 @@ All notable changes to dstok are documented here. The project follows
 
 - Stable x86 SIMD dispatch uses verified SSE4.2 and AVX2 kernels; experimental
   unstable AVX-512 code is no longer part of the build.
+- Publishable crates use dependency ranges compatible with existing Rust
+  services, including `sha2` 0.10 and `aho-corasick` 1.1.
 
 [Unreleased]: https://github.com/danielsuit/dstok/commits/main

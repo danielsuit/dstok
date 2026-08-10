@@ -15,4 +15,4 @@ smallvec.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 blake3.workspace = true
-sha2 = "0.11.0"
+sha2 = "0.10"
