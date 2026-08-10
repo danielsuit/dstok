@@ -5,6 +5,8 @@ All notable changes to dstok are documented here. The project follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-10
+
 ### Added
 
 - Public `dstok::Tokenizer` API for loading the pinned GLM-5.2 artifact from a
@@ -20,4 +22,5 @@ All notable changes to dstok are documented here. The project follows
 - Publishable crates use dependency ranges compatible with existing Rust
   services, including `sha2` 0.10 and `aho-corasick` 1.1.
 
-[Unreleased]: https://github.com/danielsuit/dstok/commits/main
+[Unreleased]: https://github.com/danielsuit/dstok/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/danielsuit/dstok/releases/tag/v0.1.0
