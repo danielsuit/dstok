@@ -2,7 +2,7 @@
 
 ## Reference
 
-The production oracle is Hugging Face `tokenizers` 0.22.2 using the Oniguruma
+The production oracle is Hugging Face `tokenizers` 0.23.1 using the Oniguruma
 backend and:
 
 ```text

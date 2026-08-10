@@ -30,7 +30,7 @@ the only upstream literal contained in the published crate archives.
 ## Conformance oracle
 
 `dstok-oracle` and `dstok-bench` compare against Hugging Face
-[`tokenizers`](https://github.com/huggingface/tokenizers) 0.22.2, which is
+[`tokenizers`](https://github.com/huggingface/tokenizers) 0.23.1, which is
 licensed under Apache-2.0. Both crates are `publish = false`, so `tokenizers`
 is not a dependency of any published `dstok` crate. "Hugging Face" is used
 descriptively to identify the reference implementation; this project is not

@@ -5,6 +5,12 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # `tokenizers` is an exact pin that defines what "correct" means for this
+      # project, and its version is mirrored in the conformance manifest, the
+      # benchmark labels, and the documentation. Moving it is a deliberate
+      # change that has to update those together, not a routine bump.
+      - dependency-name: tokenizers
 
   - package-ecosystem: github-actions
     directory: /

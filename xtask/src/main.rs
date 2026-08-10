@@ -59,7 +59,7 @@ fn run_parity_glm52() {
         },
         oracle: OracleManifest {
             implementation: "huggingface/tokenizers",
-            version: "0.22.2",
+            version: "0.23.1",
             regex_backend: "onig",
             interface: "encode_fast(add_special_tokens=false)",
         },

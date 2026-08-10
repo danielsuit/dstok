@@ -3,7 +3,7 @@
 //! `dstok` supports one production tokenizer artifact: the pinned GLM-5.2
 //! `tokenizer.json` identified in the repository's conformance manifest. The
 //! loader fails closed for any other artifact, and the optimized count path is
-//! continuously compared with Hugging Face `tokenizers` 0.22.2.
+//! continuously compared with Hugging Face `tokenizers` 0.23.1.
 //!
 //! # Example
 //!

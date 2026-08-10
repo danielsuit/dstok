@@ -4,6 +4,12 @@ Measured on Apple Silicon (`aarch64-apple-darwin`, 11 logical CPUs) with the
 pinned GLM-5.2 artifact and HF `tokenizers` 0.22.2. Every workload passed full
 token-ID equality before timing.
 
+These artifacts were recorded before the reference implementation was moved to
+`tokenizers` 0.23.1, and their `hf-0.22.2` labels are kept as the record of
+what was actually measured. Token IDs are identical under both versions, so
+the comparison remains meaningful, but a re-run is needed before any of these
+timings are attributed to 0.23.1.
+
 The full run used one timed sample per size, so these are latency observations,
 not statistically stable p95/p99 claims:
 

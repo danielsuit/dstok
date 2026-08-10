@@ -4,7 +4,7 @@ Exact, memory-efficient token counting for a pinned production GLM-5.2
 tokenizer.
 
 `dstok` is deliberately narrow: it supports one hash-verified tokenizer
-artifact and treats Hugging Face `tokenizers` 0.22.2 with Oniguruma as the
+artifact and treats Hugging Face `tokenizers` 0.23.1 with Oniguruma as the
 correctness oracle. Unknown or modified artifacts fail closed.
 
 ## Status
@@ -26,7 +26,7 @@ graph.
 - Tokenizer: only the exact GLM-5.2 artifact recorded in
   `fixtures/glm-5.2/conformance.json`.
 - Input: an already-rendered UTF-8 prompt.
-- Output: token counts or token IDs exactly equal to HF 0.22.2
+- Output: token counts or token IDs exactly equal to HF 0.23.1
   `encode_fast(..., add_special_tokens=false)`.
 - Minimum Rust version: 1.85.
 - Tested targets: Linux x86_64, Linux AArch64, and macOS AArch64.
@@ -93,7 +93,7 @@ should be considered in multi-tenant privacy reviews.
 
 ## Correctness
 
-The production gate compares complete IDs—not only counts—with HF 0.22.2:
+The production gate compares complete IDs—not only counts—with HF 0.23.1:
 
 ```sh
 cargo run -p xtask -- parity-glm52
@@ -117,7 +117,8 @@ See `docs/CORRECTNESS.md` for the invariants and release policy.
 
 ## Performance
 
-For the checked-in 19.89M-token Apple Silicon workload:
+For the checked-in 19.89M-token Apple Silicon workload, recorded against HF
+`tokenizers` 0.22.2 before the oracle moved to 0.23.1:
 
 - HF `encode_fast`: 15.558 s.
 - dstok cold count: 5.191 s.

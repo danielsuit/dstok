@@ -6,6 +6,11 @@ use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::Instant;
 
+/// Label for the reference implementation in emitted measurements. Kept as a
+/// single constant so a `tokenizers` bump cannot leave some call sites
+/// reporting a version that was not the one measured.
+const HF_LABEL: &str = "hf-0.23.1";
+
 struct CountingAllocator;
 
 static ALLOCATIONS: AtomicU64 = AtomicU64::new(0);
@@ -69,7 +74,7 @@ fn main() {
 
         let mut measurements = Vec::new();
         measurements.push(measure(
-            "hf-0.22.2",
+            HF_LABEL,
             "encode-fast",
             1,
             args.iterations,
@@ -81,7 +86,7 @@ fn main() {
             },
         ));
         measurements.push(measure(
-            "hf-0.22.2",
+            HF_LABEL,
             "render-plus-encode",
             1,
             args.iterations,
@@ -153,7 +158,7 @@ fn main() {
 
         let prefix_lengths = [25usize, 50, 75, 100].map(|percent| rendered.len() * percent / 100);
         measurements.push(measure(
-            "hf-0.22.2",
+            HF_LABEL,
             "append-only-full-recount",
             1,
             args.iterations,
@@ -186,14 +191,14 @@ fn main() {
         let hf_encode_p50 = measurements
             .iter()
             .find(|measurement| {
-                measurement.implementation == "hf-0.22.2" && measurement.scenario == "encode-fast"
+                measurement.implementation == HF_LABEL && measurement.scenario == "encode-fast"
             })
             .map(|measurement| measurement.p50_ms)
             .expect("HF reference measurement");
         let hf_render_p50 = measurements
             .iter()
             .find(|measurement| {
-                measurement.implementation == "hf-0.22.2"
+                measurement.implementation == HF_LABEL
                     && measurement.scenario == "render-plus-encode"
             })
             .map(|measurement| measurement.p50_ms)
@@ -201,7 +206,7 @@ fn main() {
         let hf_append_p50 = measurements
             .iter()
             .find(|measurement| {
-                measurement.implementation == "hf-0.22.2"
+                measurement.implementation == HF_LABEL
                     && measurement.scenario == "append-only-full-recount"
             })
             .map(|measurement| measurement.p50_ms)
@@ -227,7 +232,7 @@ fn main() {
     let report = Report {
         schema_version: 2,
         profile: "glm-5.2",
-        oracle: "huggingface/tokenizers 0.22.2 encode_fast",
+        oracle: "huggingface/tokenizers 0.23.1 encode_fast",
         hardware: Hardware {
             architecture: std::env::consts::ARCH,
             operating_system: std::env::consts::OS,
