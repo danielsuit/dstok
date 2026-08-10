@@ -67,3 +67,28 @@ jobs:
           --config "patch.crates-io.dstok-model.path=\"$PWD/dstok-model\""
           --config "patch.crates-io.dstok-core.path=\"$PWD/dstok-core\""
           --config "patch.crates-io.dstok-fast.path=\"$PWD/dstok-fast\""
+
+      - name: Verify archive contents
+        run: |
+          set -euo pipefail
+          rc=0
+          for archive in target/package/*.crate; do
+            echo "== $archive"
+            contents="$(tar tzf "$archive")"
+
+            # The 20 MB tokenizer artifact and all fixtures must never ship.
+            if echo "$contents" | grep -Ei 'tokenizer\.json|(^|/)fixtures/|\.env|conformance\.json'; then
+              echo "::error::$archive contains a fixture or artifact file"
+              rc=1
+            fi
+
+            # Both license files must be present and non-empty, since the
+            # per-crate copies are symlinks in the working tree.
+            for license in LICENSE-APACHE LICENSE-MIT; do
+              if ! echo "$contents" | grep -q "/$license$"; then
+                echo "::error::$archive is missing $license"
+                rc=1
+              fi
+            done
+          done
+          exit $rc

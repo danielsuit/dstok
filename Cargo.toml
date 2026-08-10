@@ -12,16 +12,19 @@ documentation = "https://docs.rs/dstok"
 readme = "README.md"
 keywords = ["tokenizer", "bpe", "glm", "llm", "inference"]
 categories = ["text-processing"]
+# Patterns are anchored with a leading `/`. Unanchored patterns match at any
+# depth, which would sweep in fixture and benchmark files that must not ship.
 include = [
-    "src/**",
-    "examples/**",
-    "README.md",
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md",
-    "THIRD_PARTY_NOTICES.md",
-    "docs/**",
-    "LICENSE-*",
+    "/src/**",
+    "/examples/**",
+    "/docs/**",
+    "/README.md",
+    "/CHANGELOG.md",
+    "/CONTRIBUTING.md",
+    "/SECURITY.md",
+    "/THIRD_PARTY_NOTICES.md",
+    "/LICENSE-*",
+    "/benchmarks/README.md",
 ]
 
 [dependencies]

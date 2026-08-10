@@ -9,17 +9,17 @@ correctness oracle. Unknown or modified artifacts fail closed.
 
 ## Status
 
-The Rust API is preparing for its first `0.1.0` release. Until it is published
-to crates.io, install it from Git:
+`0.1.0` is the first release. The public API is small and is expected to stay
+stable within `0.1.x`.
 
 ```toml
 [dependencies]
-dstok = { git = "https://github.com/danielsuit/dstok", rev = "<commit-sha>" }
+dstok = "0.1.0"
 ```
 
-Pin a commit SHA in production. The public package uses the safe scalar/Onig
-tokenizer path plus bounded exact caches; the experimental `dstok-simd` crate
-is not part of the dependency graph.
+The public package uses the safe scalar/Onig tokenizer path plus bounded exact
+caches; the experimental `dstok-simd` crate is not part of the dependency
+graph.
 
 ## Supported contract
 
@@ -153,9 +153,16 @@ See `benchmarks/README.md` for methodology and raw artifacts.
 - `dstok-model/`: strict artifact parsing and verification.
 - `dstok-core/`: exact scalar tokenization.
 - `dstok-fast/`: count-only caches and optimized APIs.
+Published to crates.io: `dstok`, `dstok-model`, `dstok-core`, `dstok-fast`.
+The remaining crates are `publish = false`:
+
 - `dstok-oracle/`: private HF conformance oracle.
 - `dstok-bench/`: private benchmark harness.
+- `dstok-fuzz/`: differential fuzz targets.
+- `dstok-corpus/`: corpus manifests and fetchers; no corpus data is checked in.
+- `dstok-py/`: prototype Python-facing API.
 - `dstok-simd/`: unpublished experimental classifiers, not used by `dstok`.
+- `xtask/`: release and conformance automation.
 
 ## License
 
