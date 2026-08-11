@@ -7,6 +7,11 @@
 use crate::{family::ModelId, TokenId};
 
 /// Exact Split regex from the pinned gateway GLM-5.2 `tokenizer.json`.
+///
+/// This pattern is not original to GLM-5.2: it is the byte-level
+/// pre-tokenizer regex introduced by Llama 3 and reused unchanged by many
+/// later BPE tokenizers. It is reproduced here verbatim because any
+/// deviation changes token IDs. See `THIRD_PARTY_NOTICES.md`.
 pub const GLM52_SPLIT_REGEX: &str = r"(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]+[\r\n]*|\s*[\r\n]+|\s+(?!\S)|\s+";
 
 /// SHA-256 of the pinned gateway tokenizer artifact.

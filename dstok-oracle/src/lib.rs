@@ -11,7 +11,7 @@
 
 use dstok_model::TokenId;
 
-pub const HF_TOKENIZERS_VERSION: &str = "0.22.2";
+pub const HF_TOKENIZERS_VERSION: &str = "0.23.1";
 
 /// The reference tool + version pinned for a given artifact family.
 #[derive(Debug, Clone)]

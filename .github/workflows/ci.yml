@@ -41,6 +41,17 @@ jobs:
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
       - run: cargo test --workspace --all-targets --locked
 
+  macos:
+    name: macOS AArch64 tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+        with:
+          toolchain: 1.85.0
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - run: cargo test --workspace --all-targets --locked
+
   package:
     name: Package archives
     needs: quality
@@ -67,3 +78,28 @@ jobs:
           --config "patch.crates-io.dstok-model.path=\"$PWD/dstok-model\""
           --config "patch.crates-io.dstok-core.path=\"$PWD/dstok-core\""
           --config "patch.crates-io.dstok-fast.path=\"$PWD/dstok-fast\""
+
+      - name: Verify archive contents
+        run: |
+          set -euo pipefail
+          rc=0
+          for archive in target/package/*.crate; do
+            echo "== $archive"
+            contents="$(tar tzf "$archive")"
+
+            # The 20 MB tokenizer artifact and all fixtures must never ship.
+            if echo "$contents" | grep -Ei 'tokenizer\.json|(^|/)fixtures/|\.env|conformance\.json'; then
+              echo "::error::$archive contains a fixture or artifact file"
+              rc=1
+            fi
+
+            # Both license files must be present and non-empty, since the
+            # per-crate copies are symlinks in the working tree.
+            for license in LICENSE-APACHE LICENSE-MIT; do
+              if ! echo "$contents" | grep -q "/$license$"; then
+                echo "::error::$archive is missing $license"
+                rc=1
+              fi
+            done
+          done
+          exit $rc

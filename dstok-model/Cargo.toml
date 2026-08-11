@@ -9,6 +9,10 @@ repository.workspace = true
 homepage.workspace = true
 description = "Verified tokenizer artifacts and GLM-5.2 configuration for dstok"
 documentation = "https://docs.rs/dstok-model"
+readme = "README.md"
+keywords = ["tokenizer", "bpe", "glm", "llm", "inference"]
+categories = ["text-processing"]
+include = ["/src/**", "/README.md", "/LICENSE-*"]
 
 [dependencies]
 smallvec.workspace = true

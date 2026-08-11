@@ -80,6 +80,21 @@ Verify archives under `target/package/` contain source, README, changelog, and
 license files but no benchmark outputs, corpora, credentials, or build
 artifacts.
 
+Every published manifest anchors its `include` patterns with a leading `/`.
+Unanchored patterns match at any depth and would sweep in fixture files, so do
+not remove the anchors. Note that the per-crate `LICENSE-APACHE` and
+`LICENSE-MIT` files are symlinks to the repository root; Cargo resolves them
+into real files when it builds the archive.
+
+The CI `package` job runs both checks automatically. To reproduce locally:
+
+```sh
+for archive in target/package/*.crate; do
+  tar tzf "$archive" | grep -Ei 'tokenizer\.json|(^|/)fixtures/|conformance\.json' \
+    && echo "LEAK: $archive"
+done
+```
+
 ## Versioning policy
 
 - Patch: fixes that preserve accepted artifacts and token IDs.

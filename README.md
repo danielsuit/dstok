@@ -4,29 +4,29 @@ Exact, memory-efficient token counting for a pinned production GLM-5.2
 tokenizer.
 
 `dstok` is deliberately narrow: it supports one hash-verified tokenizer
-artifact and treats Hugging Face `tokenizers` 0.22.2 with Oniguruma as the
+artifact and treats Hugging Face `tokenizers` 0.23.1 with Oniguruma as the
 correctness oracle. Unknown or modified artifacts fail closed.
 
 ## Status
 
-The Rust API is preparing for its first `0.1.0` release. Until it is published
-to crates.io, install it from Git:
+`0.1.0` is the first release. The public API is small and is expected to stay
+stable within `0.1.x`.
 
 ```toml
 [dependencies]
-dstok = { git = "https://github.com/danielsuit/dstok", rev = "<commit-sha>" }
+dstok = "0.1.0"
 ```
 
-Pin a commit SHA in production. The public package uses the safe scalar/Onig
-tokenizer path plus bounded exact caches; the experimental `dstok-simd` crate
-is not part of the dependency graph.
+The public package uses the safe scalar/Onig tokenizer path plus bounded exact
+caches; the experimental `dstok-simd` crate is not part of the dependency
+graph.
 
 ## Supported contract
 
 - Tokenizer: only the exact GLM-5.2 artifact recorded in
   `fixtures/glm-5.2/conformance.json`.
 - Input: an already-rendered UTF-8 prompt.
-- Output: token counts or token IDs exactly equal to HF 0.22.2
+- Output: token counts or token IDs exactly equal to HF 0.23.1
   `encode_fast(..., add_special_tokens=false)`.
 - Minimum Rust version: 1.85.
 - Tested targets: Linux x86_64, Linux AArch64, and macOS AArch64.
@@ -93,7 +93,7 @@ should be considered in multi-tenant privacy reviews.
 
 ## Correctness
 
-The production gate compares complete IDs—not only counts—with HF 0.22.2:
+The production gate compares complete IDs—not only counts—with HF 0.23.1:
 
 ```sh
 cargo run -p xtask -- parity-glm52
@@ -117,7 +117,8 @@ See `docs/CORRECTNESS.md` for the invariants and release policy.
 
 ## Performance
 
-For the checked-in 19.89M-token Apple Silicon workload:
+For the checked-in 19.89M-token Apple Silicon workload, recorded against HF
+`tokenizers` 0.22.2 before the oracle moved to 0.23.1:
 
 - HF `encode_fast`: 15.558 s.
 - dstok cold count: 5.191 s.
@@ -125,10 +126,13 @@ For the checked-in 19.89M-token Apple Silicon workload:
 - Isolated peak RSS: 8.640 GB for HF and 0.294 GB for dstok with the default
   cache budgets.
 
+The same matrix on a 20-core Linux AArch64 host, recorded against 0.23.1, gives
+16.547 s for HF, 5.748 s cold, and 69.68 ms segment-warm at 19.89M tokens.
+
 These are observations from specific machines, not portable latency promises.
-Linux x86_64 and AArch64 are separate correctness/compile gates. Every
-benchmark verifies token IDs before timing. Reproduce the checked-in matrix
-with:
+Linux AArch64 has both benchmark evidence and correctness gates; Linux x86_64
+is a correctness gate in CI. Every benchmark verifies token IDs before timing.
+Reproduce the checked-in matrix with:
 
 ```sh
 cargo run --release -p dstok-bench -- \
@@ -153,9 +157,16 @@ See `benchmarks/README.md` for methodology and raw artifacts.
 - `dstok-model/`: strict artifact parsing and verification.
 - `dstok-core/`: exact scalar tokenization.
 - `dstok-fast/`: count-only caches and optimized APIs.
+Published to crates.io: `dstok`, `dstok-model`, `dstok-core`, `dstok-fast`.
+The remaining crates are `publish = false`:
+
 - `dstok-oracle/`: private HF conformance oracle.
 - `dstok-bench/`: private benchmark harness.
+- `dstok-fuzz/`: differential fuzz targets.
+- `dstok-corpus/`: corpus manifests and fetchers; no corpus data is checked in.
+- `dstok-py/`: prototype Python-facing API.
 - `dstok-simd/`: unpublished experimental classifiers, not used by `dstok`.
+- `xtask/`: release and conformance automation.
 
 ## License
 
